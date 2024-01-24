@@ -1,0 +1,40 @@
+import React from 'react';
+import LoginForm from './LoginForm';
+
+const LoginContainer = () => {
+  const handleLogin = async ({ email, password }) => {
+    try {
+      const response = await fetch('http://localhost:3000/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        // Handle successful login (e.g., store the token in state/local storage)
+        console.log('Login successful:', data.accessToken);
+      } else {
+        // Handle unsuccessful login (e.g., display an error message)
+        console.error('Login failed:', response.statusText);
+      }
+    } catch (error) {
+      // Handle network errors or other exceptions
+      console.error('Error during login:', error.message);
+    }
+  };
+
+  return (
+    <div>
+      <h2>Login</h2>
+      <LoginForm handleLogin={handleLogin} />
+    </div>
+  );
+};
+
+export default LoginContainer;
